@@ -1,11 +1,11 @@
 from jaipur import Jaipur
-from jprAI_lrp2 import JaipurAILinRegPoly2
+from jprAI_rtp2 import JaipurAIRegTreePoly2
 from jprHuman import HumanPlayer
 from pdb import set_trace
 
 
 def play_jaipur():
-    game = Jaipur([JaipurAILinRegPoly2(), HumanPlayer()])
+    game = Jaipur([HumanPlayer(), JaipurAIRegTreePoly2()])
     game.play()
     set_trace()
 

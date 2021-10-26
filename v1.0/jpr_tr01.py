@@ -5,6 +5,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.dummy import DummyRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import RidgeCV
+from joblib import load
 from pdb import set_trace
 
 
@@ -19,6 +20,12 @@ def eda():
     yh_lr = lin_reg.predict(X)
     mse_dr = mean_squared_error(y, yh_dr)
     mse_lr = mean_squared_error(y, yh_lr)
+    rt = load("rt.joblib")
+    rt_p2 = load("rt_p2.joblib")
+    yh_rt = rt.predict(X)
+    yh_rt_p2 = rt_p2.predict(X)
+    mse_rt = mean_squared_error(y, yh_rt)
+    mse_rt_p2 = mean_squared_error(y, yh_rt_p2)
     set_trace()
 
 

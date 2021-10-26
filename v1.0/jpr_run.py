@@ -31,7 +31,7 @@ def sim(n):
     sa_l = Parallel(n_jobs=-1, verbose=10, batch_size=100)(delayed(sim_1g)(x, y) for x in range(n) for y in range(n))
     sa_l = np.vstack(sa_l)
     sa_l = np.unique(sa_l, axis=0)
-    sa_l = pd.DataFrame(sa_l, columns=['money'] + [f"n_{x}" for x in GOODS[:6]] + [f"x_{x}" for x in GOODS])
+    sa_l = pd.DataFrame(sa_l, columns=['q'] + [f"n_{x}" for x in GOODS[:6]] + [f"x_{x}" for x in GOODS])
     sa_l.to_parquet("qsa.pqt")
 
 
