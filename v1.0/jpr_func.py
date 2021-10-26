@@ -1,5 +1,8 @@
+import numpy as np
 from itertools import combinations
 from pdb import set_trace
+
+GOODS = ['Diamonds', 'Gold', 'Silver', 'Cloth', 'Spice', 'Leather', 'Camels']
 
 
 def exchange_n(h_e, b_e, n):
@@ -39,3 +42,28 @@ def possible_moves(hand, camel, board):
         for n_e in range(2, n_me + 1):
             moves += exchange_n(h_e, b_e, n_e)
     return moves
+
+
+def tup2vec(moves, tokens):
+    # Pre-allocate feature matrix
+    n_mv = len(moves)
+    mva = np.zeros((n_mv, 13), dtype='int16')
+
+    # Fill tokens state
+    tkn_a = [len(tokens[kind]) for kind in GOODS[:6]]
+    mva[:, :6] = tkn_a
+
+    # Fill move state
+    for i in range(n_mv):
+        if moves[i][0] == 'take_camel':
+            mva[i, -1] = moves[i][1]
+        elif moves[i][0] == 'take_one':
+            mva[i, 6 + GOODS.index(moves[i][1])] = 1
+        elif moves[i][0] == 'exchange':
+            for x in moves[i][1]:
+                mva[i, 6 + GOODS.index(x)] -= 1
+            for y in moves[i][2]:
+                mva[i, 6 + GOODS.index(y)] += 1
+        elif moves[i][0] == 'sell':
+            mva[i, 6 + GOODS.index(moves[i][1])] = -moves[i][2]
+    return mva
