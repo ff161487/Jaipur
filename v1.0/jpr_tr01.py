@@ -10,7 +10,7 @@ from pdb import set_trace
 
 
 def eda():
-    df = pd.read_parquet("qsa_lrp2.pqt")
+    df = pd.read_parquet("qsa_lgbm_p2.pqt")
     X, y = df.iloc[:, 1:].to_numpy(), df.iloc[:, 0].to_numpy()
     dummy_reg = DummyRegressor(strategy="mean")
     dummy_reg.fit(X, y)
@@ -20,12 +20,6 @@ def eda():
     yh_lr = lin_reg.predict(X)
     mse_dr = mean_squared_error(y, yh_dr)
     mse_lr = mean_squared_error(y, yh_lr)
-    rt = load("rt.joblib")
-    rt_p2 = load("rt_p2.joblib")
-    yh_rt = rt.predict(X)
-    yh_rt_p2 = rt_p2.predict(X)
-    mse_rt = mean_squared_error(y, yh_rt)
-    mse_rt_p2 = mean_squared_error(y, yh_rt_p2)
     set_trace()
 
 

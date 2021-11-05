@@ -41,7 +41,7 @@ class Jaipur:
     def play(self, verbose=True):
         ply_idx = 0
         money_list = []
-        while not self.is_over():
+        while not self.is_over() and len(money_list) < 1000:
             # Player make move and append to history
             self.draw_pile, self.board, self.tokens, self.history = self.players[ply_idx].make_move(
                 self.draw_pile, self.board, self.tokens, self.history)
@@ -63,6 +63,7 @@ class Jaipur:
 
         # Determine the winner
         ply_m = (self.players[0].money, self.players[1].money)
+        money_list[-1] = ply_m
         n_tokens = (self.players[0].n_tokens, self.players[1].n_tokens)
         n_bonus = (self.players[0].n_bonus, self.players[1].n_bonus)
         winner = None

@@ -7,7 +7,7 @@ from joblib import dump, load
 from pdb import set_trace
 
 
-def lgbt_gscv():
+def lgbm_gscv():
     df = pd.read_parquet("qsa_lrp2.pqt")
     X, y = df.iloc[:, 1:].to_numpy(), df.iloc[:, 0].to_numpy()
     poly = PolynomialFeatures(degree=2)
@@ -19,8 +19,19 @@ def lgbt_gscv():
                       return_train_score=True)
     gs.fit(X=X_2, y=y)
     rst = pd.DataFrame(gs.cv_results_)
-    rst.to_csv('gscv_lgbt.csv')
+    rst.to_csv('gscv_lgbm.csv')
+    
+    
+def tr_lgbm_p2():
+    df = pd.read_parquet("qsa_lrp2.pqt")
+    X, y = df.iloc[:, 1:].to_numpy(), df.iloc[:, 0].to_numpy()
+    mdl = Pipeline([('poly', PolynomialFeatures(degree=2)),
+                    ('lgbm', LGBMRegressor(num_leaves=100, learning_rate=0.1, n_estimators=500, random_state=0,
+                                           n_jobs=-1))])
+    mdl.fit(X, y)
+    dump(mdl, "lgbm_p2.joblib")
 
 
 if __name__ == '__main__':
-    lgbt_gscv()
+    # lgbm_gscv()
+    tr_lgbm_p2()

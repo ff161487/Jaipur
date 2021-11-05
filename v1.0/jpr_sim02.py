@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 from jaipur import Jaipur
-from jprAI_rtp2 import JaipurAIRegTreePoly2
+from jprAI_lgbm_p2 import JaipurAILGBMPoly2
 from pdb import set_trace
 
 GOODS = ['Diamonds', 'Gold', 'Silver', 'Cloth', 'Spice', 'Leather', 'Camels']
 
 
 def sim_1g(seed_g):
-    game = Jaipur([JaipurAIRegTreePoly2(), JaipurAIRegTreePoly2()], seed_g=seed_g)
+    game = Jaipur([JaipurAILGBMPoly2(), JaipurAILGBMPoly2()], seed_g=seed_g)
     money_list = game.play(verbose=False)
     money_list = np.array(money_list)
     scores = np.zeros((len(money_list), 2))
@@ -28,12 +28,12 @@ def sim_1g(seed_g):
 
 
 def sim(n):
-    sa_l = Parallel(n_jobs=-1, verbose=10, batch_size=100)(delayed(sim_1g)(x) for x in range(n))
+    sa_l = Parallel(n_jobs=-1, verbose=10)(delayed(sim_1g)(x) for x in range(n))
     sa_l = np.vstack(sa_l)
     sa_l = np.unique(sa_l, axis=0)
     sa_l = pd.DataFrame(sa_l, columns=['q'] + [f"n_{x}" for x in GOODS[:6]] + [f"x_{x}" for x in GOODS])
-    sa_l.to_parquet("qsa_rtp2.pqt")
+    sa_l.to_parquet("qsa_lgbm_p2.pqt")
 
 
 if __name__ == '__main__':
-    sim(90000)
+    sim(1000)
